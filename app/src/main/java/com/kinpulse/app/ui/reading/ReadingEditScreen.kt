@@ -161,7 +161,7 @@ fun ReadingEditScreen(
 
                 OutlinedTextField(
                     value = vm.note,
-                    onValueChange = vm::setNote,
+                    onValueChange = vm::onNoteChange,
                     label = { Text("Note (optional)") },
                     placeholder = { Text("e.g. after walk, missed dose") },
                     maxLines = 3,
@@ -256,7 +256,7 @@ private fun SugarFields(vm: ReadingEditViewModel) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         OutlinedTextField(
             value = vm.sugarText,
-            onValueChange = vm::setSugarText,
+            onValueChange = vm::onSugarTextChange,
             label = { Text("Blood sugar") },
             suffix = { Text("mg/dL") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -283,7 +283,7 @@ private fun BpFields(vm: ReadingEditViewModel) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             OutlinedTextField(
                 value = vm.systolicText,
-                onValueChange = vm::setSystolicText,
+                onValueChange = vm::onSystolicTextChange,
                 label = { Text("Systolic") },
                 suffix = { Text("mmHg") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -294,7 +294,7 @@ private fun BpFields(vm: ReadingEditViewModel) {
             )
             OutlinedTextField(
                 value = vm.diastolicText,
-                onValueChange = vm::setDiastolicText,
+                onValueChange = vm::onDiastolicTextChange,
                 label = { Text("Diastolic") },
                 suffix = { Text("mmHg") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -306,7 +306,7 @@ private fun BpFields(vm: ReadingEditViewModel) {
         }
         OutlinedTextField(
             value = vm.pulseText,
-            onValueChange = vm::setPulseText,
+            onValueChange = vm::onPulseTextChange,
             label = { Text("Pulse (optional)") },
             suffix = { Text("bpm") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
