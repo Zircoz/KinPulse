@@ -88,13 +88,14 @@ fun ProfileScreen(
         error?.let { snackbar.showSnackbar(it); vm.error.value = null }
     }
 
+    val loadedReadings = readings
     when (val s = state) {
         ProfileState.Loading -> LoadingBox()
         ProfileState.Gone -> LaunchedEffect(Unit) { onBack() }
-        is ProfileState.Ready -> ProfileContent(
+        is ProfileState.Ready -> if (loadedReadings == null) LoadingBox() else ProfileContent(
             profile = s.profile,
             user = user,
-            readings = readings ?: emptyList(),
+            readings = loadedReadings,
             vm = vm,
             snackbar = snackbar,
             onBack = onBack,
