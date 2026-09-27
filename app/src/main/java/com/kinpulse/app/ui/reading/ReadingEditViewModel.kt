@@ -93,35 +93,35 @@ class ReadingEditViewModel(
         takenAt = reading.takenAt
     }
 
-    fun setType(value: ReadingType) {
+    fun onTypeChange(value: ReadingType) {
         if (!isEditing) type = value
     }
 
-    fun setSugarText(value: String) {
+    fun onSugarTextChange(value: String) {
         sugarText = value.filter { it.isDigit() }.take(4)
     }
 
-    fun setSugarContext(value: SugarContext) {
+    fun onSugarContextChange(value: SugarContext) {
         sugarContext = value
     }
 
-    fun setSystolicText(value: String) {
+    fun onSystolicTextChange(value: String) {
         systolicText = value.filter { it.isDigit() }.take(4)
     }
 
-    fun setDiastolicText(value: String) {
+    fun onDiastolicTextChange(value: String) {
         diastolicText = value.filter { it.isDigit() }.take(4)
     }
 
-    fun setPulseText(value: String) {
+    fun onPulseTextChange(value: String) {
         pulseText = value.filter { it.isDigit() }.take(4)
     }
 
-    fun setNote(value: String) {
+    fun onNoteChange(value: String) {
         note = value
     }
 
-    fun setTakenAt(value: Long) {
+    fun onTakenAtChange(value: Long) {
         takenAt = value
     }
 

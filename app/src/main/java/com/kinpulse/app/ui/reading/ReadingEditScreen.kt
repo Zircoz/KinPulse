@@ -123,12 +123,12 @@ fun ReadingEditScreen(
                     SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
                         SegmentedButton(
                             selected = vm.type == ReadingType.SUGAR,
-                            onClick = { vm.setType(ReadingType.SUGAR) },
+                            onClick = { vm.onTypeChange(ReadingType.SUGAR) },
                             shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
                         ) { Text("Sugar") }
                         SegmentedButton(
                             selected = vm.type == ReadingType.BP,
-                            onClick = { vm.setType(ReadingType.BP) },
+                            onClick = { vm.onTypeChange(ReadingType.BP) },
                             shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                         ) { Text("Blood pressure") }
                     }
@@ -214,7 +214,7 @@ fun ReadingEditScreen(
                     if (picked != null) {
                         val pickedDate = Instant.ofEpochMilli(picked).atZone(ZoneOffset.UTC).toLocalDate()
                         val existingTime = Instant.ofEpochMilli(vm.takenAt).atZone(zone).toLocalTime()
-                        vm.setTakenAt(pickedDate.atTime(existingTime).atZone(zone).toInstant().toEpochMilli())
+                        vm.onTakenAtChange(pickedDate.atTime(existingTime).atZone(zone).toInstant().toEpochMilli())
                     }
                 }) { Text("OK") }
             },
@@ -242,7 +242,7 @@ fun ReadingEditScreen(
                     showTimePicker = false
                     val currentLocalDate = Instant.ofEpochMilli(vm.takenAt).atZone(zone).toLocalDate()
                     val newTime = LocalTime.of(state.hour, state.minute)
-                    vm.setTakenAt(currentLocalDate.atTime(newTime).atZone(zone).toInstant().toEpochMilli())
+                    vm.onTakenAtChange(currentLocalDate.atTime(newTime).atZone(zone).toInstant().toEpochMilli())
                 }) { Text("OK") }
             },
             dismissButton = { TextButton(onClick = { showTimePicker = false }) { Text("Cancel") } },
@@ -269,7 +269,7 @@ private fun SugarFields(vm: ReadingEditViewModel) {
             SugarContext.entries.forEach { ctx ->
                 FilterChip(
                     selected = vm.sugarContext == ctx,
-                    onClick = { vm.setSugarContext(ctx) },
+                    onClick = { vm.onSugarContextChange(ctx) },
                     label = { Text(ctx.label) },
                 )
             }
