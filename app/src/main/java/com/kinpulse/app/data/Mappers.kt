@@ -58,10 +58,15 @@ internal fun Reading.toMap(): Map<String, Any?> = mapOf(
     "addedByName" to addedByName,
 )
 
-internal fun DocumentSnapshot.toInvite(): Invite? = Invite(
-    profileId = getString("profileId") ?: return null,
-    profileName = getString("profileName").orEmpty(),
-    email = getString("email") ?: return null,
-    role = getString("role").toEnumOrNull<Role>() ?: return null,
-    invitedByName = getString("invitedByName").orEmpty(),
-)
+internal fun DocumentSnapshot.toInvite(): Invite? {
+    val profileId = getString("profileId") ?: return null
+    val email = getString("email") ?: return null
+    val role = getString("role").toEnumOrNull<Role>() ?: return null
+    return Invite(
+        profileId = profileId,
+        profileName = getString("profileName").orEmpty(),
+        email = email,
+        role = role,
+        invitedByName = getString("invitedByName").orEmpty(),
+    )
+}
