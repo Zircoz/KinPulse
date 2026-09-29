@@ -2,6 +2,7 @@ package com.kinpulse.app.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +36,11 @@ class AuthRepository(private val auth: FirebaseAuth) {
 
     suspend fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email.trim(), password).await()
+    }
+
+    /** Signs in with a Google ID token; Google accounts arrive with a verified email. */
+    suspend fun signInWithGoogle(idToken: String) {
+        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null)).await()
     }
 
     suspend fun signUp(name: String, email: String, password: String) {

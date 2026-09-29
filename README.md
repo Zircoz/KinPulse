@@ -25,7 +25,11 @@ KinPulse talks to your own Firebase project — no data goes anywhere else.
 3. Download the generated `google-services.json` and place it at `app/google-services.json`
    (this file is per-developer and intentionally not committed; the Gradle build only applies
    the Google Services plugin when it finds it — see `app/build.gradle.kts`).
-4. In **Authentication → Sign-in method**, enable the **Email/Password** provider.
+4. In **Authentication → Sign-in method**, enable the **Email/Password** and **Google** providers.
+   For Google sign-in, also add your signing key's SHA-1 under **Project settings → Your apps →
+   SHA certificate fingerprints** (for the debug key: `./gradlew signingReport`), then download
+   `google-services.json` again so it contains the OAuth client. The "Continue with Google" button
+   only appears when that client is present; email/password keeps working without it.
 5. In **Firestore Database**, create a database (any region; production or test mode, since the
    rules below lock it down either way).
 6. Deploy the security rules and indexes from the repo root using the
@@ -50,6 +54,8 @@ If you'd like CI's APK to be wired to your own Firebase project, add the content
 `google-services.json` as a repository secret named `GOOGLE_SERVICES_JSON`; the workflow writes it
 to `app/google-services.json` before building. This is optional — CI builds and tests fine without
 it, since the app degrades to a "Firebase not configured" screen when the file is missing.
+Note that each CI run signs the APK with a fresh debug key, so Google sign-in fails on CI builds
+(email/password still works); build locally, or with a fixed signing key, for Google sign-in.
 
 ## Data model
 
@@ -86,7 +92,6 @@ doctor may set different targets for a specific person.
 
 ## Roadmap ideas
 
-- Google sign-in, as an alternative to email/password.
 - Reminders/notifications to log a reading.
 - A preference to display sugar readings in mmol/L instead of mg/dL.
 - PDF report export, alongside the existing CSV export.

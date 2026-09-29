@@ -28,12 +28,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.kinpulse.app.data.AuthRepository
+import com.kinpulse.app.data.GoogleSignIn
 import com.kinpulse.app.data.SessionUser
 import com.kinpulse.app.ui.components.userMessage
 import kotlinx.coroutines.launch
@@ -64,6 +66,9 @@ fun AuthScreen(auth: AuthRepository) {
         }
     }
 
+    val context = LocalContext.current
+    val googleClientId = remember { GoogleSignIn.webClientId(context) }
+
     val canSubmit = !busy && email.contains('@') && when (mode) {
         AuthMode.SIGN_IN -> password.isNotEmpty()
         AuthMode.SIGN_UP -> name.isNotBlank() && password.length >= 6
@@ -86,6 +91,23 @@ fun AuthScreen(auth: AuthRepository) {
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
             )
+            if (googleClientId != null && mode != AuthMode.RESET) {
+                OutlinedButton(
+                    onClick = {
+                        run {
+                            val token = GoogleSignIn.requestIdToken(context, googleClientId)
+                            if (token != null) auth.signInWithGoogle(token)
+                        }
+                    },
+                    enabled = !busy,
+                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                ) { Text("Continue with Google") }
+                Text(
+                    "or use your email",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             Text(
                 when (mode) {
                     AuthMode.SIGN_IN -> "Sign in"
